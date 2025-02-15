@@ -3,7 +3,7 @@ from river import compose, linear_model, preprocessing
 
 from main import RiverModelManager
 
-from river import datasets, optim, metrics,feature_extraction,stats,evaluate
+from river import datasets, optim, metrics,feature_extraction,stats
 
 
 def get_hour(x):
