@@ -1,8 +1,7 @@
 import time
 from river import compose, linear_model, preprocessing
 
-from main import RiverModelManager
-
+from river_queue import RiverModelManager
 from river import datasets, optim, metrics,feature_extraction,stats
 
 
