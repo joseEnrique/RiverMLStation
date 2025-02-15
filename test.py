@@ -30,7 +30,7 @@ if __name__ == "__main__":
     dataset = datasets.Bikes()
     try:
         for x,y in dataset.take(1000):
-            manager.train_one(x, y)
+            manager.learn_one(x, y)
 
         y_preds = []
         for x, y in dataset.take(1000):

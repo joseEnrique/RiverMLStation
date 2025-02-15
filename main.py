@@ -143,7 +143,7 @@ class RiverModelManager:
             else:
                 self.logger.warning(f"Unexpected message in response queue: {msg}")
 
-    def train_one(self, x_dict: dict, y_label):
+    def learn_one(self, x_dict: dict, y_label):
         """
         Send a train request to the server.
         Note: This is non-blocking; it just sends the request.
