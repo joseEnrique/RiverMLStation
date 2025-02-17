@@ -1,6 +1,6 @@
 """Implements a wraper for river datasets."""
 
-from RiverGenerator.base_generator import BaseGenerator
+from rivergenerator.base_generator import BaseGenerator
 
 
 class RiverDatasetGenerator(BaseGenerator):
