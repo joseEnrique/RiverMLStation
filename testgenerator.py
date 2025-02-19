@@ -25,7 +25,8 @@ if __name__ == "__main__":
     dataset = datasets.Bikes()
 
     start_time = time.time()
-    for x, y in RiverDatasetGenerator(stream_period=0, dataset=dataset, n_instances=10000000):
+    generator = RiverDatasetGenerator(stream_period=0, dataset=dataset, n_instances=dataset.n_outputs)
+    for x, y in generator:
         y_pred = model.predict_one(x)
         model.learn_one(x, y)
         metric.update(y_pred, y)
@@ -33,6 +34,7 @@ if __name__ == "__main__":
     elapsed_time = end_time - start_time
     print(metric)
     print(f"The Original Proccess took {elapsed_time} seconds.")
+    print (generator.get_count())
 
     anothermodel = compose.Select('clouds', 'humidity', 'pressure', 'temperature', 'wind')
     anothermodel += (
@@ -44,7 +46,7 @@ if __name__ == "__main__":
     metric = metrics.MAE()
     manager = RiverModelManagerPipe(model=anothermodel)
     start_time = time.time()
-    for x,y in RiverDatasetGenerator(stream_period=0,dataset=dataset,n_instances=10000000):
+    for x,y in RiverDatasetGenerator(stream_period=0,dataset=dataset,n_instances=100000000000000000):
         y_pred = manager.predict_one(x)
         manager.learn_one(x, y)
         metric.update(y_pred, y)

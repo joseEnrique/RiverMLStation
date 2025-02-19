@@ -5,7 +5,7 @@ class BaseGenerator(ABC):
         self.stream_period = stream_period
         self.timeout = timeout
         self.last_message_time = time.time()
-
+        self._count = 0
     def __iter__(self):
         return self
 
@@ -43,4 +43,8 @@ class BaseGenerator(ABC):
         Returns:
             list: message
         """
+        raise NotImplementedError("Abstract method")
+
+    @abstractmethod
+    def get_count(self):
         raise NotImplementedError("Abstract method")

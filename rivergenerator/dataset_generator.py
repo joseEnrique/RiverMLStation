@@ -36,7 +36,11 @@ class RiverDatasetGenerator(BaseGenerator):
             x, y = next(self._iterator)
             # Return the data in whichever format you prefer.
             # For instance, a tuple, dict, or list:
+            self._count += 1
             return x, y
         except StopIteration:
             self.stop()     # Optionally perform any cleanup here
             raise
+
+    def get_count(self):
+        return self._count
