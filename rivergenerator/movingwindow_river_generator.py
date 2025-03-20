@@ -78,7 +78,7 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
         """Extracts target features from the message."""
         return self._select_features(message, self.target_idx)
 
-    def preprocess(self, message):
+    def _preprocess(self, message):
         """
         Applies the moving window preprocessing to the incoming message.
 
@@ -111,6 +111,18 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
 
         return x_out, y_out
 
+    def __next__(self):
+        """
+        We override __next__ so that it:
+          1. Respects the timing logic from the BaseGenerator (sleep if necessary).
+          2. Calls get_message to fetch the next data point.
+        """
+        # Step 1: respect timing logic from the base class
+        super().__next__()
+
+        # Step 2: fetch the next message (x, y)
+        return self.get_message()
+
     def get_message(self):
         """
         Retrieves the next message from the river dataset (via the base generator),
@@ -128,7 +140,7 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
             # The base generator already increments the message count, but we also ensure it here.
             self._count += 1
 
-            return self.preprocess(raw_x)
+            return self._preprocess(raw_x)
         except StopIteration:
             self.stop()
             raise
