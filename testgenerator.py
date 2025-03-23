@@ -1,4 +1,4 @@
-from rivergenerator.river_dataset_generator import RiverDatasetGenerator
+from generator.river_dataset_generator import RiverDatasetGenerator
 from river import datasets, optim, metrics,compose, linear_model, preprocessing,feature_extraction, stats
 from rivermultiproccesing.river_pipe import RiverModelManagerPipe
 import time

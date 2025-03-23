@@ -1,7 +1,7 @@
 from river.datasets import synth
 
-from rivergenerator.movingwindow_river_generator import MovingWindowRiverGenerator
-from rivergenerator.river_dataset_generator import RiverDatasetGenerator
+from generator.movingwindow_river_generator import MovingWindowRiverGenerator
+from generator.river_dataset_generator import RiverDatasetGenerator
 from river import datasets, optim, metrics,compose, linear_model, preprocessing,feature_extraction, stats
 from rivermultiproccesing.river_pipe import RiverModelManagerPipe
 import time

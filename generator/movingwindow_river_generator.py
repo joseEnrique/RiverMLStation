@@ -1,4 +1,4 @@
-from rivergenerator.river_dataset_generator import RiverDatasetGenerator
+from generator.river_dataset_generator import RiverDatasetGenerator
 
 
 class MovingWindowRiverGenerator(RiverDatasetGenerator):

@@ -6,7 +6,7 @@ import time
 import copy
 import datetime as dt
 
-from rivergenerator.river_dataset_generator import RiverDatasetGenerator
+from generator.river_dataset_generator import RiverDatasetGenerator
 from rivermultiproccesing.river_queue import RiverModelManager
 from testdeep.lstm import NewLstmModule
 
