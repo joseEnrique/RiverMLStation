@@ -78,7 +78,7 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
         """Extracts target features from the message."""
         return self._select_features(message, self.target_idx)
 
-    def _preprocess(self, message):
+    def _preprocess(self, x, y):
         """
         Applies the moving window preprocessing to the incoming message.
 
@@ -93,11 +93,11 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
         x_out, y_out = None, None
 
         # Append the processed input features to the input window
-        self.x_window.append(self._get_x(message))
+        self.x_window.append(self._get_x(x))
 
         # Start appending to the target window once enough messages have been processed
         if self._count >= self.past_history + self.shift:
-            self.y_window.append(self._get_y(message))
+            self.y_window.append(self._get_y(y))
 
         # When x_window is full, create a copy for output and remove the oldest entry
         if len(self.x_window) == self.past_history:
@@ -108,7 +108,6 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
         if len(self.y_window) == self.forecasting_horizon:
             y_out = self.y_window.copy()
             self.y_window.pop(0)
-
         return x_out, y_out
 
     def __next__(self):
@@ -120,7 +119,7 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
         # Step 1: respect timing logic from the base class
         super().__next__()
 
-        # Step 2: fetch the next message (x, y)
+
         return self.get_message()
 
     def get_message(self):
@@ -135,12 +134,11 @@ class MovingWindowRiverGenerator(RiverDatasetGenerator):
         try:
             # Get the raw message from the parent generator.
             # The parent returns a tuple (x, y) but we use x as the raw time series message.
-            raw_x, _ = super().get_message()
-
+            raw_x, raw_y = super().get_message()
             # The base generator already increments the message count, but we also ensure it here.
             self._count += 1
 
-            return self._preprocess(raw_x)
+            return self._preprocess(raw_x,raw_y)
         except StopIteration:
             self.stop()
             raise
