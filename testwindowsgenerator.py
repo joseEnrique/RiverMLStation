@@ -1,4 +1,4 @@
-from generator.movingwindow_river_generator import MovingWindowListGenerator
+from generator.movingwindow_list_generator import MovingWindowListGenerator
 
 
 def _test_moving_window(
