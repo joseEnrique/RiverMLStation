@@ -33,9 +33,14 @@ class ListDatasetGenerator(BaseGenerator):
         If the dataset is exhausted, it calls stop() and raises StopIteration.
         """
         try:
-            x, y = next(self._iterator)
-            # Return the data in whichever format you prefer.
-            # For instance, a tuple, dict, or list:
+            item = next(self._iterator)
+            # Check if 'item' is a single integer (or anything that's not a tuple).
+            # If so, wrap it into a (x, None) tuple or whatever makes sense for your case.
+            if isinstance(item, int):
+                x, y = item, None
+            else:
+                # Otherwise assume it's already something like (x, y)
+                x, y = item
             self._count += 1
             return x, y
         except StopIteration:
