@@ -19,6 +19,9 @@ def _test_moving_window(
         shift=shift,
         input_idx=input_idx,
         target_idx=target_idx,
+        stream_period=0,
+        timeout=100000000
+
     )
 
     collected_X = []

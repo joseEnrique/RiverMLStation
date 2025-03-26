@@ -1,5 +1,7 @@
+from generator.base_generator import BaseGenerator
 
-class MovingWindowListGenerator:
+
+class MovingWindowListGenerator(BaseGenerator):
     """
     A generator for sliding windows over a list of data points.
 
@@ -16,7 +18,9 @@ class MovingWindowListGenerator:
         forecasting_horizon: int,
         shift: int = 1,
         input_idx=None,
-        target_idx=None
+        target_idx=None,
+        stream_period=0,
+        timeout=30000
     ):
         """
         Args:
@@ -29,6 +33,7 @@ class MovingWindowListGenerator:
             input_idx: Which features to use for X (None => all, int => 1 column, list => multiple columns).
             target_idx: Which features to use for Y (None => all, int => 1 column, list => multiple columns).
         """
+        super().__init__(stream_period=stream_period, timeout=timeout)
         self.data = data
         self.past_history = past_history
         self.forecasting_horizon = forecasting_horizon
@@ -46,26 +51,33 @@ class MovingWindowListGenerator:
         self.y_window = []
 
         # Read index
-        self._index = 0
+        self._count = 0
 
     def __iter__(self):
         return self
 
     def __next__(self):
+        super().__next__()
         # If no more data and x_window is empty, we're done
-        if self._index >= len(self.data) and not self.x_window:
+        if self._count >= len(self.data) and not self.x_window:
             raise StopIteration
+        return self.get_message()
+
+    def get_count(self):
+        return self._count
+
+    def get_message(self):
 
         x_out, y_out = None, None
 
         # Keep reading until we produce a full X-window
         while x_out is None:
-            if self._index >= len(self.data):
+            if self._count >= len(self.data):
                 # No more data to read
                 raise StopIteration
 
-            raw_val = self.data[self._index]
-            self._index += 1
+            raw_val = self.data[self._count]
+            self._count += 1
 
             # If single-feature data, wrap into a list so we can do feature selection uniformly
             if not self._is_multi_feature:
@@ -86,7 +98,7 @@ class MovingWindowListGenerator:
                     x_out = [x_[0] for x_ in x_out]  # each x_ is [value], so take x_[0]
 
             # Start populating y_window once we've read at least (past_history + shift) data points
-            if self._index >= (self.past_history + self.shift):
+            if self._count >= (self.past_history + self.shift):
                 y_features = self._select_features(raw_val, self.target_idx)
                 self.y_window.append(y_features)
 
