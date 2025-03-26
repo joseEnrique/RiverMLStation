@@ -19,8 +19,8 @@ class BaseGenerator(ABC):
                             % (self.stream_period / 1000)
                     )
                 )
-        starttime = time.time()
-        self.last_message_time = starttime
+        start_time = time.time()
+        self.last_message_time = start_time
         try:
             return None
         except Exception as e:
